@@ -1,0 +1,19 @@
+{
+	"name": "bobo1212/netcurl",
+	"description": "Modern library",
+	"homepage": "https://github.com/bobo1212/NetCurl",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Bobo1212"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0",
+		"ext-curl": "*",
+	},
+	"autoload": {
+		"psr-0": {"Net": ""}
+	}
+}
