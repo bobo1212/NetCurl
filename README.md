@@ -1,8 +1,10 @@
 # NetCurl
 
 
-Instalation
+Installation with Composer
+--------------------------
 
+```json
 {
     "repositories": [
         {
@@ -14,4 +16,3 @@ Instalation
         "bobo1212/netcurl": "dev-master"
     }
 }
-
