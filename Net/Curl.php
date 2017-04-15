@@ -15,9 +15,11 @@ class Curl {
     public function setHeaders(array $headers) {
         $this->headers = $headers;
     }
+
     public function getHeaders() {
         $this->headers = $headers;
     }
+
     private function createHeaders($dataHeaders) {
         $dataHeaders = array_merge($this->headers, $dataHeaders);
         $headers = [];
