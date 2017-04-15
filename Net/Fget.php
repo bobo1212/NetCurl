@@ -13,7 +13,7 @@ class Fget {
         if (is_array($http_response_header)) {
             foreach ($http_response_header as $c => $h) {
                 if (stristr($h, 'content-encoding') and stristr($h, 'gzip')) {
-                    $data = $this->gzdecode($data);
+                    return $this->gzdecode($data);
                 }
             }
         }
