@@ -3,15 +3,14 @@
 namespace Net;
 
 class CurlMulti {
-	
-	private $mh;
-	private $curls;
-	
-	public function __construct(){
-		
-		$this->mh = curl_multi_init();
-	}
-	
+
+    private $mh;
+    private $curls;
+
+    public function __construct() {
+
+        $this->mh = curl_multi_init();
+    }
 
     protected $headers = [
         'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -21,12 +20,6 @@ class CurlMulti {
         'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0'
     ];
 
-    public function setHeaders(array $headers) {
-        $this->headers = $headers;
-    }
-    public function getHeaders() {
-        $this->headers = $headers;
-    }
     private function createHeaders($dataHeaders) {
         $dataHeaders = array_merge($this->headers, $dataHeaders);
         $headers = [];
@@ -36,6 +29,14 @@ class CurlMulti {
         return $headers;
     }
 
+    /**
+     * 
+     * $data['url']
+     * $data['headers'] = array
+     * $data['referer']
+     * $data['post']
+     * 
+     * */
     function prepare(array $data) {
 
         $data['headers']['Host'] = parse_url($data['url'], PHP_URL_HOST);
@@ -61,51 +62,71 @@ class CurlMulti {
         }
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        
-        
-        curl_multi_add_handle($this->mh,$curl);
+
+
+        curl_multi_add_handle($this->mh, $curl);
         $this->curls[] = $curl;
     }
-	
-	public function closeAll(){
-		foreach($this->curls as $curl){
-			curl_multi_remove_handle($this->mh, $curl);
-		}
-		curl_multi_close($this->mh);
-		
-	}
-	public function getPage(){
-		
-		
-		$running=null;
-			do {
-				curl_multi_exec($this->mh, $running);
-				curl_multi_select($this->mh);
-			} while ($running > 0);
-			
-		foreach($this->curls as $curl){
-			var_dump(curl_getinfo($curl, CURLINFO_HTTP_CODE));
-			if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200) {
-				var_dump(curl_multi_getcontent($curl));  // get results
-			}else{
-				var_dump('errorrrr');exit;
-			}
 
-		}
-	}
+    public function getPages() {
+
+        $running = 0;
+        do {
+            curl_multi_exec($this->mh, $running);
+            curl_multi_select($this->mh);
+        } while ($running > 0);
+        $pages = [];
+        foreach ($this->curls as $curl) {
+            if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200) {
+                $pages[] = curl_multi_getcontent($curl);
+            }
+            curl_multi_remove_handle($this->mh, $curl);
+        }
+        return $pages;
+    }
+
+    public function __destruct() {
+        curl_multi_close($this->mh);
+    }
+
 }
-
 
 $c = new CurlMulti();
 
-$data=[
-	'url' =>'http://newzend.com'
-];
-for($i= 0; $i<=5;$i++){
-	$c->prepare($data);
+for ($i = 0; $i <= 100; $i++) {
+
+    $data = [
+        'url' => 'http://newzend?i=' . $i
+    ];
+
+    $c->prepare($data);
 }
-$c->getPage();
-$c->closeAll();
+$start = microtime(true);
+var_dump($c->getPages());
+$stop  = microtime(true);
+
+var_dump($stop - $start);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
