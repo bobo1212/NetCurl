@@ -79,6 +79,8 @@ class CurlMulti {
         foreach ($this->curls as $curl) {
             if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200) {
                 $pages[] = curl_multi_getcontent($curl);
+            }else{
+                $pages[] = '';
             }
             curl_multi_remove_handle($this->mh, $curl);
         }
