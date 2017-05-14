@@ -6,7 +6,7 @@ namespace Net;
  */
 class Fget {
 
-    public function getPage($url) {
+    public function getPage(string $url) {
 
         $data = file_get_contents($url);
 
