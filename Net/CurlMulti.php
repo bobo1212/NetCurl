@@ -75,15 +75,13 @@ class CurlMulti {
             curl_multi_exec($this->mh, $running);
             curl_multi_select($this->mh);
         } while ($running > 0);
+        
         $pages = [];
         foreach ($this->curls as $curl) {
-            if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200) {
-                $pages[] = curl_multi_getcontent($curl);
-            }else{
-                $pages[] = '';
-            }
+            $pages[] = curl_multi_getcontent($curl);
             curl_multi_remove_handle($this->mh, $curl);
         }
+        $this->curls = [];
         return $pages;
     }
 
@@ -92,45 +90,3 @@ class CurlMulti {
     }
 
 }
-
-$c = new CurlMulti();
-
-for ($i = 0; $i <= 100; $i++) {
-
-    $data = [
-        'url' => 'http://newzend?i=' . $i
-    ];
-
-    $c->prepare($data);
-}
-$start = microtime(true);
-var_dump($c->getPages());
-$stop  = microtime(true);
-
-var_dump($stop - $start);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
