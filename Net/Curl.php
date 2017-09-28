@@ -55,13 +55,8 @@ class Curl {
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         $strona = curl_exec($curl);
-
-        if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200) {
-            curl_close($curl);
-            return $strona;
-        } else {
-            curl_close($curl);
-        }
+        curl_close($curl);
+        return $strona;
     }
 
 }
