@@ -52,6 +52,9 @@ class Curl {
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data['post']);
         }
+        if (array_key_exists('authorizationBasic',$data)) {
+            curl_setopt($curl, CURLOPT_USERPWD, $data['authorizationBasic']['username'] . ":" . $data['authorizationBasic']['password']);
+        }
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         $strona = curl_exec($curl);
