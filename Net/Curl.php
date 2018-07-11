@@ -17,7 +17,7 @@ class Curl {
     }
 
     public function getHeaders() {
-        $this->headers = $headers;
+        return $this->headers;
     }
 
     private function createHeaders($dataHeaders) {
