@@ -42,6 +42,7 @@ class Curl {
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_CAINFO, dirname(__FILE__) . "/cacert.pem");
+        curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, 'DEFAULT@SECLEVEL=1');
         if (!empty($data['headers'])) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, $data['headers']);
         }
